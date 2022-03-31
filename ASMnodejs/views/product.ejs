@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('head.ejs') %>
+
+    <body>
+        <%- include('navbar-header.ejs') %>
+            <section id="page-header">
+                <h2>#Mua hàng tại nhà</h2>
+                <p>Tiết kiệm hơn với phiếu giảm giá và giảm giá lên đến 70%!</p>
+            </section>
+            <section id="prodetails" class="section-p1">
+
+            </section>
+            <section id="product1" class="section-p1">
+                <h2>Sản phẩm liên quan</h2>
+                <p>Thiết kế Morden mới của Bộ sưu tập mùa hè</p>
+                <div class="pro-container" id="pro-container-relate"></div>
+            </section>
+
+            <%- include('footer.ejs') %>
+
+    </body>
+    <script src="/javascripts/script.js"></script>
+    <div id="prodetails"></div>
+    <script>
+        let url = `http://localhost:3000/sanpham/<%=id%>`;
+        window.fetch(url)
+            .then(function (res) {
+                if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+                return res.json();
+            })
+            .then(function (data) {
+                let str = "";
+                str += ` <div class="single-pro-image">
+                    <img src="../images/products/${data.img}" width="100%" id="MainImg" alt="">
+                </div>
+                <div class="single-pro-details">
+                    <h6>Trang chủ / ${data.id_danhmuc}</h6>
+                    <h4>${data.ten_sanpham}</h4>
+                    <h2>$${data.gia_sanpham}</h2>
+                    <select>
+                        <option>Chọn Size</option>
+                        <option>XL</option>
+                        <option>XXL</option>
+                        <option>Small</option>
+                        <option>Large</option>
+                    </select>
+                    <input type="number" value="1">
+                    <button class="normal" onclick="addToCart(${data.id},'${data.ten_sanpham}','${data.gia_sanpham}','${data.img}')">Thêm vào giỏ</button>
+                    <h4>Thông tin mô tả</h4>
+                    <span>${data.mota} is made from a substantial 6.0 oz. per
+                sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.</span>
+                </div>`;
+                document.getElementById("prodetails").innerHTML = str;
+                console.log(data);
+            })
+            .catch(function (error) { console.log("Lỗi: ", error); })
+    </script>
+
+    <script>
+        function addToCart(id, ten, gia, hinh) {
+            var cart = JSON.parse(localStorage.getItem("cart"));
+            if (cart == null) {
+                cart = [];
+                cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            else {
+                let item = cart.find(item => item.id === id);
+                if (item) item.quantity++;
+                else cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Đã thêm sp vào túi!")
+        }
+    </script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("pro-container-relate");
+            var x = 0;
+            data.forEach(sp => {
+                if (x < 5) {
+                    kq.innerHTML += `<div class="pro">
+                            <img src="/images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="/product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}
+                                </h4>
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+                    x += 1;
+                }
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+        window.fetch(`http://localhost:3000/sanpham`)
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+
+</html>

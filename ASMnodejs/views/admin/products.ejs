@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('head-admin.ejs') %>
+
+    <body>
+        <div class="container">
+            <%- include('navbar-admin.ejs') %>
+
+                <!-- Main -->
+                <div class="main">
+                    <!-- topbar -->
+                    <%- include('topbar.ejs') %>
+
+                        <!-- card -->
+                        <%- include('header-card.ejs') %>
+
+                            <!--  order details List -->
+                            <div class="details">
+                                <div class="recentOrders">
+                                    <div class="cardHeader">
+                                        <h2>Products</h2>
+                                        <a href="#" class="btn">View All</a>
+                                    </div>
+                                    <table id="danhsachsp">
+                                        <thead>
+                                            <tr>
+                                                <td>Img</td>
+                                                <td style="text-align: left;">Name</td>
+                                                <td>Price</td>
+                                                <td>Cat ID</td>
+                                                <td>Options</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Products -->
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        function kiemtra(res) {
+                                            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+                                            console.log(res);   //xem cấu trúc của response
+                                            return res.json();  //parse body của response thành json
+                                        }
+                                        function xulydulieu(data) {
+                                            var kq = document.querySelector("#danhsachsp tbody");
+                                            data.forEach(sp => {
+                                                kq.innerHTML += `<tr data-id="${sp.id}">
+                                                    <td><!-- userImg -->
+                                                        <div class="user">
+                                                            <img src="./images/products/${sp.img}" alt="">
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align: left;"> ${sp.ten_sanpham}</td>
+                                                    <td>$${sp.gia_sanpham}</td>
+                                                    <td>${sp.id_danhmuc}</td>
+                                                    <td>
+                                                    <a href="editProduct.html?id=${sp.id}">
+                                                        <ion-icon name="create-outline" class="create-outline"></ion-icon>
+                                                    </a>
+                                                    <a href="#" onclick="xoaSP(${sp.id})">
+                                                        <ion-icon name="trash-outline" class="trash-outline"></ion-icon>
+                                                    </a>
+                                                    </td>
+                                                </tr>`;
+                                            });
+                                        }
+                                        function xulyloi(e) { console.log("Lỗi: ", e); }
+
+                                        window.fetch("http://localhost:3000/sanpham/")
+                                            .then(kiemtra)
+                                            .then(xulydulieu)
+                                            .catch(xulyloi);
+                                    </script>
+                                </div>
+
+                                <!-- Add New Products -->
+                                <div class="recentCustomers">
+                                    <div class="cardHeader">
+                                        <h2>New Products</h2>
+                                    </div>
+                                    <form class="product-form" enctype="multipart/form-data">
+                                        <div class="group">
+                                            <label class="">Loại</label>
+                                            <br>
+                                            <select id="cat_id">
+                                            </select>
+                                        </div>
+                                        <div class="group">
+                                            <label class="">Tên sản phẩm</label><br>
+                                            <input type="text" class="form-control" name="tensp" id="namesp">
+                                        </div>
+                                        <div class="group">
+                                            <label class="">Giá sản phẩm</label><br>
+                                            <input type="number" name="giasp" class="form-control" id="price">
+                                        </div>
+                                        <div class="group">
+                                            <label class="">Mô tả</label><br>
+                                            <textarea class="form-control" name="motasp" id="detail"
+                                                rows="5"></textarea>
+                                        </div>
+                                        <div class="group">
+                                            <label class="">Hình sản phẩm</label>
+                                            <input type="file" class="form-control btn" name="hinhsp" id="image">
+                                        </div>
+                                        <div class="group">
+                                            <div>
+                                                <!--<input type="button" id="addNewProducts">Lưu</input>-->
+                                                <a class="btn" id="addNewProducts">Thêm</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                </div>
+        </div>
+    </body>
+    <%- include('footer-admin.ejs') %>
+
+        <script>
+            // Xoa San pham
+            function xoaSP(id) {
+                const hoi = confirm(`Bạn muốn xóa sản phẩm này? ${id}`);
+                if (hoi == false) return;
+                url = `http://localhost:3000/sanpham/${id}`;
+                options = {
+                    method: "DELETE",
+                    headers: { 'Content-Type': 'application/json' }
+                }
+                fetch(url, options)
+                    .then(res => res.json())
+                    .then(data => {
+                        alert("Đã xóa!");
+                        let tr = document.querySelector(`tr[data-id='${id}']`);
+                        tr.remove()
+                    });
+            }
+        </script>
+        <script>
+            // Thêm Sản phẩm
+            addNewProducts = document.querySelector("#addNewProducts");
+            addNewProducts.onclick = function () {
+                url = "http://localhost:3000/sanpham";
+                sp = {
+                    id_danhmuc: document.querySelector("#cate-value").value.trim(),
+                    ten_sanpham: document.querySelector("#namesp").value.trim(),
+                    gia_sanpham: document.querySelector("#price").value.trim(),
+                    mota: document.querySelector("#detail").value.trim(),
+                    img: document.querySelector("#image").value.trim(),
+                }
+                console.log("sp=", sp);
+                options = {
+                    method: "POST",
+                    body: JSON.stringify(sp),
+                    headers: { 'Content-Type': 'application/json' }
+                }
+                fetch(url, options)
+                    .then(res => res.json())
+                    .then(sp => {
+                        var kq = document.querySelector("#danhsachsp tbody");
+                        kq.innerHTML += `
+                        <tr>
+                            <td><!-- userImg -->
+                                <div class="user">
+                                    <img src="./images/products/${sp.img}" alt="">
+                                </div>
+                            </td>
+                            <td style="text-align: left;"> ${sp.ten_sanpham}</td>
+                            <td>$${sp.gia_sanpham}</td>
+                            <td>${sp.id_danhmuc}</td>
+                            <td>
+                            <a href="editProduct.html?id=${sp.insertId}">
+                                <ion-icon name="create-outline" class="create-outline"></ion-icon>
+                            </a>
+                            <a href="#" onclick="xoaSP(${sp.insertId})">
+                                <ion-icon name="trash-outline" class="trash-outline"></ion-icon>
+                            </a>
+                            </td>
+                        </tr>`;
+                    });
+            }
+        </script>
+        <script>
+            function kiemtra(res) {
+                if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+                console.log(res);   //xem cấu trúc của response
+                return res.json();  //parse body của response thành json
+            }
+            function xulydulieu(data) {
+                var kq = document.querySelector("#cat_id");
+                data.forEach(dm => {
+                    kq.innerHTML += ` <option id="cate-value" value="${dm.id}">${dm.ten_danhmuc}</option>`;
+                });
+            }
+            function xulyloi(e) { console.log("Lỗi: ", e); }
+
+            window.fetch("http://localhost:3000/danhmuc/")
+                .then(kiemtra)
+                .then(xulydulieu)
+                .catch(xulyloi);
+        </script>
+
+</html>

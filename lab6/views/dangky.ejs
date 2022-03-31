@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../stylesheets/css.css">
+</head>
+
+<body>
+    <form name="frmdk">
+        <h2>Đăng Kí</h2>
+        <div>
+            <input type="text" name="username" placeholder="Nhập username">
+        </div>
+        <div>
+            <input type="password" name="password" placeholder="Nhập password">
+        </div>
+        <div>
+            <input type="email" name="email" placeholder="Nhập email">
+        </div>
+        <div>
+            <input type="text" name="tinh" placeholder="Nhập tỉnh">
+        </div>
+        <div class="frame">
+            <button class="custom-btn btn-5" onclick="dangky()"><span>Read More</span></button>
+        </div>
+    </form>
+    <script>
+        function dangky() {
+            let un = document.frmdk.username.value;
+            let pw = document.frmdk.password.value;
+            let em = document.frmdk.email.value;
+            let tinh = document.frmdk.tinh.value;
+            let data = {
+                username: un,
+                password: pw,
+                email: em,
+                diachi: tinh
+            }
+            let url = "http://localhost:3000/users/";
+            fetch(url, {
+                method: "POST",
+
+                body: JSON.stringify(data),
+
+                headers: { "Content-type": "application/json; charset=UTF-8" }
+
+            })
+                .then(response => response.json())
+                .then(function (data) {
+                    document.frmdk.reset();
+                    console.log(data);
+                })
+                .catch(err => console.log(err));
+        }
+    </script>
+</body>
+
+</html>

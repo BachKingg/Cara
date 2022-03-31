@@ -1,0 +1,21 @@
+<% for (let s of listSach) { %>
+    <div class="container mt-5">
+        <div class="d-flex shadow p-3 mb-5 bg-body rounded">
+            <div class="flex-shrink-0">
+                <img src="/<%= s.urlHinh %>" alt="card-img" class="img-fluid" style="width: 350px;height: 550px;">
+            </div>
+            <div class="card-body flex-grow-1 ms-3">
+                <h5 class="card-title">
+                    <%= s.tenSach %>
+                </h5>
+                <p class="card-text">
+                    <%= s.mota %>
+                </p>
+                <h6 class="card-text">
+                    <%= s.gia %> VND
+                </h6>
+                <button class="btn btn-primary btn-lg mt-3" type="submit">Buy now</button>
+            </div>
+        </div>
+    </div>
+    <% } %>

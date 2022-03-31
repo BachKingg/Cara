@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+body::-webkit-scrollbar {
+    width: 1px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #00cc99;
+    /* border-radius: 50px; */
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #6600ff;
+    border-radius: 50px;
+}
+
+html {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #eee;
+    text-transform: capitalize;
+    background: #2980B9;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFFFF, #6DD5FA, #2980B9);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFFFF, #6DD5FA, #2980B9);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+#listuser,
+#chitietuser,
+form {
+    width: 400px;
+    margin: 250px auto;
+    background: #ffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: rgba(245, 10, 10, 0.05) 0px 0px 0px 1px, rgb(63, 114, 190) 0px 0px 0px 1px inset;
+}
+
+h1,
+h2 {
+    text-align: center;
+    background-color: #08AEEA;
+    background-image: linear-gradient(45deg, #08AEEA 0%, #2AF598 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+div {
+    width: 100%;
+}
+
+input {
+    font-family: 'Open Sans', sans-serif;
+    width: 90%;
+    padding: 15px 15px;
+    margin: 10px 0;
+    border: 1px solid #eee;
+    outline: none;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+}
+
+.frame {
+    width: 100%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+button {
+    margin: 20px;
+    outline: none;
+}
+
+.custom-btn {
+    width: 130px;
+    height: 40px;
+    padding: 10px 25px;
+    border: 2px solid #000;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+/* 5 */
+.btn-5 {
+    background: #000;
+    color: #fff;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+}
+
+.btn-5:hover {
+    background: transparent;
+    color: #000;
+    box-shadow:
+        -7px -7px 20px 0px #fff9,
+        -4px -4px 5px 0px #fff9,
+        7px 7px 20px 0px #0002,
+        4px 4px 5px 0px #0001;
+}
+
+.btn-5:before,
+.btn-5:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2px;
+    width: 0;
+    background: #000;
+    transition: 400ms ease all;
+}
+
+.btn-5:after {
+    right: inherit;
+    top: inherit;
+    left: 0;
+    bottom: 0;
+}
+
+.btn-5:hover:before,
+.btn-5:hover:after {
+    width: 100%;
+    transition: 800ms ease all;
+}

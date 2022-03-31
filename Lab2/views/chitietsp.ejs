@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('head.ejs') %>
+
+    <body>
+        <%- include('header.ejs') %>
+            <div class="container mt-5">
+                <div class="d-flex shadow p-3 mb-5 bg-body rounded">
+                    <div class="flex-shrink-0">
+                      <img src="/images/<%= sp.imageURL %>" alt="card-img">
+                    </div>
+                    <div class="card-body flex-grow-1 ms-3">
+                        <h5 class="card-title">
+                            <%= sp.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%= sp.description %>
+                        </p>
+                        <h6 class="card-text">
+                            <%= sp.price %> VND
+                        </h6>
+                        <button class="btn btn-primary btn-lg mt-3" type="submit">Buy now</button>
+                    </div>
+                  </div>
+            </div>
+            <%- include('footer.ejs') %>
+    </body>
+</html>

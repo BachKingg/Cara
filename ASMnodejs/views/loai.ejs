@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('head.ejs') %>
+
+    <body>
+        <%- include('navbar-header.ejs') %>
+
+            <section id="page-header">
+                <h2>#Mua hàng tại nhà</h2>
+                <p>Tiết kiệm hơn với phiếu giảm giá và giảm giá lên đến 70%!</p>
+            </section>
+
+            <section id="product1" class="section-p1">
+                <h2>JACKET</h2>
+                <p>Thiết kế Morden mới của Bộ sưu tập mùa hè</p>
+                <div class="pro-container" id="pro-container-1">
+
+                </div>
+            </section>
+            <section id="product1" class="section-p1">
+                <h2>T-SHIRT</h2>
+                <p>Thiết kế Morden mới của Bộ sưu tập mùa hè</p>
+                <div class="pro-container" id="pro-container-2">
+
+                </div>
+            </section>
+            <section id="product1" class="section-p1">
+                <h2>ACCESSORIES</h2>
+                <p>Thiết kế Morden mới của Bộ sưu tập mùa hè</p>
+                <div class="pro-container" id="pro-container-3">
+
+                </div>
+            </section>
+            <section id="product1" class="section-p1">
+                <h2>SHORT & PANTS</h2>
+                <p>Thiết kế Morden mới của Bộ sưu tập mùa hè</p>
+                <div class="pro-container" id="pro-container-4">
+
+                </div>
+            </section>
+
+            <section id="pagination" class="section-p1">
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#"><i class="fal fa-long-arrow-alt-right"></i></a>
+            </section>
+
+            <%- include('footer.ejs') %>
+
+    </body>
+
+    <script src="./javascripts/script.js"></script>
+
+    <script>
+        function addToCart(id, ten, gia, hinh) {
+            var cart = JSON.parse(localStorage.getItem("cart"));
+            if (cart == null) {
+                cart = [];
+                cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            else {
+                let item = cart.find(item => item.id === id);
+                if (item) item.quantity++;
+                else cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Đã thêm sp vào túi!")
+        }
+    </script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("pro-container-1");
+            var x = 0;
+            data.forEach(sp => {
+                if (x < 5) {
+                    kq.innerHTML += `<div class="pro">
+                            <img src="/images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="/product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}
+                                </h4>
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+                    x += 1;
+                }
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+        window.fetch(`http://localhost:3000/sanpham/relate/41`)
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("pro-container-2");
+            var x = 0;
+            data.forEach(sp => {
+                if (x < 5) {
+                    kq.innerHTML += `<div class="pro">
+                            <img src="/images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="/product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}
+                                </h4>
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+                    x += 1;
+                }
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+        window.fetch(`http://localhost:3000/sanpham/relate/42`)
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("pro-container-3");
+            var x = 0;
+            data.forEach(sp => {
+                if (x < 5) {
+                    kq.innerHTML += `<div class="pro">
+                            <img src="/images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="/product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}
+                                </h4>
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+                    x += 1;
+                }
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+        window.fetch(`http://localhost:3000/sanpham/relate/43`)
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("pro-container-4");
+            var x = 0;
+            console.log(data);
+            data.forEach(sp => {
+                if (x < 5) {
+                    kq.innerHTML += `<div class="pro">
+                            <img src="/images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="/product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}
+                                </h4>
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+                    x += 1;
+                }
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+        window.fetch(`http://localhost:3000/sanpham/relate/44`)
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+
+</html>

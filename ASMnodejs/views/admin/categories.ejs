@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('head-admin.ejs') %>
+
+    <body>
+        <div class="container">
+            <%- include('navbar-admin.ejs') %>
+
+                <!-- Main -->
+                <div class="main">
+                    <!-- topbar -->
+                    <%- include('topbar.ejs') %>
+
+                        <!-- card -->
+                        <%- include('header-card.ejs') %>
+
+                            <!--  order details List -->
+                            <div class="details">
+                                <div class="recentOrders">
+                                    <div class="cardHeader">
+                                        <h2>Categories</h2>
+                                        <a href="#" class="btn">View All</a>
+                                    </div>
+                                    <table id="danhsachdm">
+                                        <thead>
+                                            <tr>
+                                                <td>Cate ID</td>
+                                                <td>Cate Name</td>
+                                                <td>Options</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        function kiemtra(res) {
+                                            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+                                            console.log(res);   //xem cấu trúc của response
+                                            return res.json();  //parse body của response thành json
+                                        }
+                                        function xulydulieu(data) {
+                                            var kq = document.querySelector("#danhsachdm tbody");
+                                            data.forEach(dm => {
+                                                kq.innerHTML += `   <tr data-id="${dm.id}">                
+                                                <td>${dm.id}</td>
+                                                <td>${dm.ten_danhmuc}</td>
+                                                <td>
+                                                <a href="/danhmuc/${dm.id}">
+                                                    <ion-icon name="create-outline" class="create-outline"></ion-icon>
+                                                </a>
+                                                <a href="#" onclick="xoaDM(${dm.id})">
+                                                    <ion-icon name="trash-outline" class="trash-outline"></ion-icon>
+                                                </a>
+                                                </td>
+                                            </tr>`;
+                                            });
+                                        }
+                                        function xulyloi(e) { console.log("Lỗi: ", e); }
+
+                                        window.fetch("http://localhost:3000/danhmuc/")
+                                            .then(kiemtra)
+                                            .then(xulydulieu)
+                                            .catch(xulyloi);
+                                    </script>
+                                </div>
+                                <!-- Add New Products -->
+                                <div class="recentCustomers">
+                                    <div class="cardHeader">
+                                        <h2>New Category</h2>
+                                    </div>
+                                    <div class="product-form">
+                                        <div class="group">
+                                            <label>Tên Danh mục</label>
+                                            <input type="text" class="form-control" name="tendm" id="name">
+
+                                        </div>
+                                        <div class="group">
+                                            <div>
+                                                <a class="btn" id="updateCategory">Cập nhật</a>
+                                                <a class="btn" id="addNewCategory">Thêm</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                </div>
+        </div>
+    </body>
+    <%- include('footer-admin.ejs') %>
+        <script>
+            // Xoa Danh mục
+            function xoaDM(id) {
+                const hoi = confirm(`Bạn muốn xóa danh mục này? ${id}`);
+                if (hoi == false) return;
+                url = `http://localhost:3000/danhmuc/${id}`;
+                options = {
+                    method: "DELETE",
+                    headers: { 'Content-Type': 'application/json' }
+                }
+                fetch(url, options)
+                    .then(res => res.json())
+                    .then(data => {
+                        alert("Đã xóa!");
+                        let tr = document.querySelector(`tr[data-id='${id}']`);
+                        tr.remove()
+                    });
+            }
+        </script>
+        <script>
+            // Thêm Danh mục
+            addNewCategory = document.querySelector("#addNewCategory");
+            addNewCategory.onclick = function () {
+                url = "http://localhost:3000/danhmuc";
+                dm = {
+                    ten_danhmuc: document.querySelector("#name").value.trim(),
+                }
+                console.log("dm=", dm);
+                options = {
+                    method: "POST",
+                    body: JSON.stringify(dm),
+                    headers: { 'Content-Type': 'application/json' }
+                }
+                fetch(url, options)
+                    .then(res => res.json())
+                    .then(dm => {
+                        var kq = document.querySelector("#danhsachdm tbody");
+                        kq.innerHTML += `  
+                             <tr data-id="${dm.insertId}">                
+                                <td>${dm.insertId}</td>
+                                <td>${dm.ten_danhmuc}</td>
+                                <td>
+                                <a href="/danhmuc/${dm.insertId}">
+                                    <ion-icon name="create-outline" class="create-outline"></ion-icon>
+                                </a>
+                                <a href="#" onclick="xoaDM(${dm.insertId})">
+                                    <ion-icon name="trash-outline" class="trash-outline"></ion-icon>
+                                </a>
+                                </td>
+                            </tr>`;
+                    });
+            }
+        </script>
+        <script>
+            // Lấy chi tiết Danh mục
+            let params = new URLSearchParams(location.search);
+            let id = params.get("id");
+            updateCategory = document.querySelector("#updateCategory");
+            updateCategory.onclick = function () {
+                url = `http://localhost:3000/danhmuc/${id}`;
+                dm = {
+                    ten_danhmuc: document.querySelector("#name").value.trim()
+                }
+                console.log("dm=", dm);
+                options = {
+                    method: "PUT",
+                    body: JSON.stringify(dm),
+                    headers: { 'Content-Type': 'application/json' }
+                }
+                fetch(url, options).then(res => res.json())
+                    .then(listDM => {
+                        console.log(listDM);
+                        document.location = "/cate";
+                        alert("Đã cập nhật");
+                    })
+            }
+        </script>
+        <script>
+            url = `http://localhost:3000/danhmuc/${id}`;
+            fetch(url).then(res => res.json())
+                .then(motDM => {
+                    console.log(motDM);
+                    document.querySelector("#name").value = motDM.ten_danhmuc;
+                })
+        </script>
+
+</html>

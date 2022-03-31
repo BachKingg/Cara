@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<%- include('head.ejs') %>
+
+    <body>
+        <%- include('navbar-header.ejs') %>
+
+            <section id="page-header">
+                <h2>#Mua hàng tại nhà</h2>
+                <p>Tiết kiệm hơn với phiếu giảm giá và giảm giá lên đến 70%!</p>
+            </section>
+            <section id="product1" class="section-p1">
+                <h2>Tất cả sản phẩm</h2>
+                <p>Nhập thông tin sản phẩm bạn muốn tìm</p>
+                <div class="search">
+                    <ion-icon name="search-outline"></ion-icon>
+                    <input type="text" name="" id="">
+                </div>
+                <div class="pro-container" id="products-filter">
+
+                </div>
+            </section>
+            <%- include('footer.ejs') %>
+
+    </body>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("products-filter");
+            data.forEach(sp => {
+                kq.innerHTML += `
+                <div class="pro">
+                            <img src="./images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}</h4>                               
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+
+        window.fetch("http://localhost:3000/sanpham/")
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+    <script>
+        var searchInput = document.querySelector('.search input')
+        searchInput.addEventListener('input', function (e) {
+            let txtSearch = e.target.value.trim().toLowerCase();
+            let listProductDOM = document.querySelectorAll('.pro')
+            listProductDOM.forEach(item => {
+                if (item.innerText.toLowerCase().includes(txtSearch)) {
+                    item.classList.remove('clear')
+                } else {
+                    item.classList.add('clear')
+                }
+            })
+        })
+    </script>
+    <script>
+        function addToCart(id, ten, gia, hinh) {
+            var cart = JSON.parse(localStorage.getItem("cart"));
+            if (cart == null) {
+                cart = [];
+                cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            else {
+                let item = cart.find(item => item.id === id);
+                if (item) item.quantity++;
+                else cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Đã thêm sp vào túi!")
+        }
+    </script>
+</html>

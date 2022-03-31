@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('head.ejs') %>
+
+
+    <body>
+        <%- include('navbar-header.ejs') %>
+
+            <section id="page-header" class="about-header">
+                <h2>#Liện hệ</h2>
+                <p>ĐỂ LẠI LỜI NHẮN, Chúng tôi muốn nghe ý kiến của bạn!</p>
+            </section>
+
+            <section id="contact-details" class="section-p1">
+                <div class="details">
+                    <span>GIỮ LIÊN LẠC</span>
+                    <h2>Ghé thăm một trong các địa điểm đại lý của chúng tôi hoặc liên hệ với chúng tôi ngay hôm nay
+                    </h2>
+                    <h3>Trụ sở chính</h3>
+                    <div>
+                        <li>
+                            <i class="fal fa-map"></i>
+                            <p>525/28 Quang Trung, P.10, Gò Vấp</p>
+                        </li>
+                        <li>
+                            <i class="far fa-envelope"></i>
+                            <p>bach19112002@gmail.com</p>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <p>0396262848</p>
+                        </li>
+                        <li>
+                            <i class="far fa-clock"></i>
+                            <p>Thứ Hai đến Thứ Bảy: 9 giờ sáng đến 16 giờ chiều</p>
+                        </li>
+                    </div>
+                </div>
+
+                <div class="map"><iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.453991111692!2d106.6297991!3d10.8530333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529b6a2b351a5%3A0x11690ada8c36f9bc!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIFRo4buxYyBow6BuaCBGUFQgUG9seXRlY2huaWMgVFAuSENNIChDUzMp!5e0!3m2!1svi!2s!4v1644415146068!5m2!1svi!2s"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
+            </section>
+
+            <section id="form-details">
+                <form action="">
+                    <span>ĐỂ LẠI LỜI NHẮN</span>
+                    <h2>Chúng tôi thích nghe từ bạn</h2>
+                    <input type="text" placeholder="Your Name">
+                    <input type="text" placeholder="E-mail">
+                    <input type="text" placeholder="Subject">
+                    <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
+                    <button class="normal">Gửi đi</button>
+                </form>
+
+                <div class="people">
+                    <div>
+                        <img src="./images/people/1.png" alt="">
+                        <p><span>Bách Nguyễn</span>
+                            Quản lý tiếp thị cấp cao <br> Phone: + 000 123
+                            000 77 88 <br> Email: contact@example.com</p>
+                    </div>
+                    <div>
+                        <img src="./images/people/2.png" alt="">
+                        <p><span>Nguyễn Bách</span> Quản lý tiếp thị cấp cao <br> Phone: + 000
+                            123 000 77 88 <br> Email: contact@example.com</p>
+                    </div>
+                    <div>
+                        <img src="./images/people/3.png" alt="">
+                        <p><span>Xuân Bách</span> Quản lý tiếp thị cấp cao <br> Phone: + 000 123
+                            000 77 88 <br> Email: contact@example.com</p>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('footer.ejs') %>
+
+    </body>
+
+    <script src="./javascripts/script.js"></script>
+
+</html>

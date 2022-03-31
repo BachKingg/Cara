@@ -1,0 +1,30 @@
+<form name="frmdk">
+    <p>Username: <input value="<%=u.username %>" type="text" name="username"></p>
+    <p>Password: <input value="<%=u.password %>" type="password" name="password"></p>
+    <p>Email: <input value="<%=u.email %>" type="email" name="email"></p>
+    <button type="button" onclick="capNhat()">Cập Nhật</button>
+</form>
+<script>
+    function capNhat() {
+        let un = document.frmdk.username.value;
+        let pw = document.frmdk.password.value;
+        let em = document.frmdk.email.value;
+        let data = {
+            username: un,
+            password: pw,
+            email: em
+        }
+        let url = "http://localhost:3000/users/";
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+            .then(response => response.json())
+            .then(function (data) {
+                document.frmdk.reset();
+                console.log(data);
+            })
+            .catch(err => console.log(err));
+    }
+</script>

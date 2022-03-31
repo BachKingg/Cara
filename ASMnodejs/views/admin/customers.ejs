@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('head-admin.ejs') %>
+
+    <body>
+        <div class="container">
+            <%- include('navbar-admin.ejs') %>
+
+                <!-- Main -->
+                <div class="main">
+                    <!-- topbar -->
+                    <%- include('topbar.ejs') %>
+
+                        <!-- card -->
+                        <%- include('header-card.ejs') %>
+
+                            <!--  order details List -->
+                            <div class="details">
+                                <div class="recentOrders">
+                                    <div class="cardHeader">
+                                        <h2>Customers</h2>
+                                        <a href="#" class="btn">View All</a>
+                                    </div>
+                                    <table id="danhsachusers">
+                                        <thead>
+                                            <tr>
+                                                <td>ID</td>
+                                                <td>Img</td>
+                                                <td style="text-align: left;">Username</td>
+                                                <td>Fullname</td>
+                                                <td>Phone</td>
+                                                <td>Email</td>
+                                                <td style="text-align: left;">Address</td>
+                                                <td>Role</td>
+                                                <td>Options</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Products -->
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        function kiemtra(res) {
+                                            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+                                            console.log(res);   //xem cấu trúc của response
+                                            return res.json();  //parse body của response thành json
+                                        }
+                                        function xulydulieu(data) {
+                                            var kq = document.querySelector("#danhsachusers tbody");
+                                            data.forEach(user => {
+                                                kq.innerHTML += `<tr>
+                                                    <td>${user.id}</td>
+                                                    <td><!-- userImg -->
+                                                        <div class="user">
+                                                            <img src="./images/people/admin.jpg" alt="">
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align: left;">${user.username}</td>
+                                                    <td style="text-align: left;"> Nguyễn Xuân Bách</td>
+                                                    <td>${user.phone}</td>
+                                                    <td>${user.email}</td>
+                                                    <td>${user.diachi}</td>
+                                                    <td>${user.vaitro}</td>
+                                                    <td>
+                                                    <a href="editUser.html?id=${user.id}">
+                                                        <ion-icon name="create-outline" class="create-outline"></ion-icon>
+                                                    </a>
+                                                    <a href="#" onclick="xoaUs(${user.id})">
+                                                        <ion-icon name="trash-outline" class="trash-outline"></ion-icon>
+                                                    </a>
+                                                    </td>
+                                                </tr>`;
+                                            });
+                                        }
+                                        function xulyloi(e) { console.log("Lỗi: ", e); }
+
+                                        window.fetch("http://localhost:3000/users/")
+                                            .then(kiemtra)
+                                            .then(xulydulieu)
+                                            .catch(xulyloi);
+                                    </script>
+                                </div>
+
+                                <!-- Add New Products -->
+                                <!-- <div class="recentCustomers">
+                                    <div class="cardHeader">
+                                        <h2>New Products</h2>
+                                    </div>
+                                    <div class="product-form">
+                                        <div class="group">
+                                            <label class="">Loại</label>
+                                            <select id="cat_id">
+                                            </select>
+                                        </div>
+                                        <div class="group">
+                                            <div>
+                                                <input type="button" id="addNewProducts">Lưu</input>
+                                                <a class="btn" id="addNewProducts">Thêm</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                            </div>
+                </div>
+        </div>
+    </body>
+    <%- include('footer-admin.ejs') %>
+
+</html>

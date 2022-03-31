@@ -1,0 +1,24 @@
+<div class="row">
+    <% for (let s of listSach) { %>
+        <div class="col-4">
+            <div class="card text-start w-100 mb-3" style="width:18rem;">
+                <img src="/<%= s.urlHinh %>" class="card-img-top img-fluid" alt="Card image" style="width:100%; height: 400px;">
+                <div class="card-body">
+                    <h5>
+                        <a class="text-decoration-none" href="/detail/<%= s.id %> ">
+                            <%= s.tenSach %>
+                        </a>
+                    </h5>
+                    <p class="d-inline-block text-truncate" style="max-width: 250px;">
+                        <%= s.mota %>
+                    </p>
+                    <h6 class="price">
+                        <%= s.gia %> VNĐ
+                    </h6>
+                    <p></p>
+                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        <% } %>
+</div>

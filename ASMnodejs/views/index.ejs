@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('head.ejs') %>
+
+    <body>
+        <%- include('navbar-header.ejs') %>
+
+            <section id="hero">
+                <h4>Ưu đãi mua bán</h4>
+                <h2>Ưu đãi siêu giá trị</h2>
+                <h1>Trên tất cả các sản phẩm</h1>
+                <p>Tiết kiệm hơn với phiếu giảm giá và giảm giá lên đến 70%!</p>
+                <button>Mua ngay</button>
+            </section>
+
+            <section id="feature" class="section-p1">
+                <div class="fe-box">
+                    <img src="./images/features/f1.png" alt="">
+                    <h6>Miễn phí giao hàng</h6>
+                </div>
+                <div class="fe-box">
+                    <img src="./images/features/f2.png" alt="">
+                    <h6>Đặt hàng Online</h6>
+                </div>
+                <div class="fe-box">
+                    <img src="./images/features/f3.png" alt="">
+                    <h6>Tiết kiệm chi phí</h6>
+                </div>
+                <div class="fe-box">
+                    <img src="./images/features/f4.png" alt="">
+                    <h6>Sự thăng tiến</h6>
+                </div>
+                <div class="fe-box">
+                    <img src="./images/features/f5.png" alt="">
+                    <h6>Nhiệt tình</h6>
+                </div>
+                <div class="fe-box">
+                    <img src="./images/features/f6.png" alt="">
+                    <h6>Hỗ trợ 24/7</h6>
+                </div>
+            </section>
+
+            <section id="product1" class="section-p1">
+                <h2>Sản phẩm nổi bật</h2>
+                <p>Thiết kế Morden mới của Bộ sưu tập mùa hè</p>
+                <div class="pro-container" id="pro-container"></div>
+            </section>
+
+            <section id="banner" class="section-m1">
+                <h4>Dịch vụ sửa chữa</h4>
+                <h2>Giảm giá tới <span> 70% </span> cho tất cả Áo Phông & Phụ Kiện</h2>
+                <button class="normal">Khám phá ngay</button>
+            </section>
+
+            <section id="product1" class="section-p1">
+                <h2>Sản phẩm mới</h2>
+                <p>Thiết kế Morden mới của Bộ sưu tập mùa hè</p>
+                <div class="pro-container" id="pro-container-new"></div>
+            </section>
+
+            <section id="sm-banner" class="section-p1">
+                <div class="banner-box">
+                    <h4>Deals khủng</h4>
+                    <h2>Mua 1 tặng 1</h2>
+                    <span>Chiếc váy cổ điển tốt nhất đang được bán tại cara</span>
+                    <button class="white">Xem thêm</button>
+                </div>
+                <div class="banner-box banner-box2">
+                    <h4>Xuân / Hạ</h4>
+                    <h2>Mùa sắp tới</h2>
+                    <span>Chiếc váy cổ điển tốt nhất đang được bán tại cara</span>
+                    <button class="white">Sưu tầm</button>
+                </div>
+            </section>
+
+            <section id="banner3">
+                <div class="banner-box">
+                    <h2>GIẢM GIÁ THEO MÙA</h2>
+                    <h3>Bộ sưu tập Mùa đông GIẢM GIÁ 50%</h3>
+                </div>
+                <div class="banner-box banner-box2">
+                    <h2>BỘ SƯU TẬP GIÀY DÉP MỚI</h2>
+                    <h3>Xuân / Hạ 2022</h3>
+                </div>
+                <div class="banner-box banner-box3">
+                    <h2>ÁO THUN</h2>
+                    <h3>Bản in hợp thời trang mới</h3>
+                </div>
+            </section>
+
+            <%- include('footer.ejs') %>
+
+    </body>
+    <script src="./javascripts/script.js"></script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("pro-container");
+            var x = 0;
+            data.forEach(sp => {
+                if (x < 10) {
+                    kq.innerHTML += `<div class="pro">
+                            <img src="./images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}
+                                </h4>
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+                    x += 1;
+                }
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+        window.fetch("http://localhost:3000/sanpham/hot")
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+    <script>
+        function kiemtra(res) {
+            if (!res.ok) { throw new Error("Lỗi = " + res.status); }
+            console.log(res);   //xem cấu trúc của response
+            return res.json();  //parse body của response thành json
+        }
+        function xulydulieu(data) {
+            var kq = document.getElementById("pro-container-new");
+            var x = 0;
+            data.forEach(sp => {
+                kq.innerHTML += `<div class="pro">
+                            <img src="./images/products/${sp.img}" alt="">
+                            <div class="des">
+                                <span>Danh mục: ${sp.id_danhmuc}</span>
+                                <a href="product/${sp.id}">
+                                    <h5>
+                                        ${sp.ten_sanpham}
+                                    </h5>
+                                </a>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>$${sp.gia_sanpham}
+                                </h4>
+                            </div>
+                            <a onclick="addToCart(${sp.id},'${sp.ten_sanpham}','${sp.gia_sanpham}','${sp.img}')">
+                            <i class="fal fa-shopping-cart cart"></i>
+                            </a>
+                        </div>`;
+            });
+        }
+        function xulyloi(e) { console.log("Lỗi: ", e); }
+        window.fetch("http://localhost:3000/sanpham/new")
+            .then(kiemtra)
+            .then(xulydulieu)
+            .catch(xulyloi);
+    </script>
+    <script>
+        function addToCart(id, ten, gia, hinh) {
+            var cart = JSON.parse(localStorage.getItem("cart"));
+            if (cart == null) {
+                cart = [];
+                cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            else {
+                let item = cart.find(item => item.id === id);
+                if (item) item.quantity++;
+                else cart.push({ id: id, name: ten, price: gia, image: hinh, quantity: 1 });
+            }
+            localStorage.setItem("cart",JSON.stringify(cart));
+            alert("Đã thêm sp vào túi!")
+        }
+    </script>
+
+</html>

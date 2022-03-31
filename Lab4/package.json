@@ -1,0 +1,21 @@
+{
+    "name": "lab2",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.1",
+        "bootstrap-icons": "^1.7.2",
+        "ejs": "^3.1.6",
+        "express": "^4.17.2",
+        "formidable": "^2.0.1",
+        "mysql": "^2.18.1",
+        "nodemon": "^2.0.15"
+    }
+}

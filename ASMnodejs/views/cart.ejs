@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('head.ejs') %>
+
+
+    <body>
+        <%- include('navbar-header.ejs') %>
+
+            <section id="page-header" class="about-header">
+                <h2>#Giỏ hàng</h2>
+                <p>Tất cả sản phẩm bạn muốn mua ở đây.</p>
+            </section>
+
+            <section id="cart" class="section-p1">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>XÓA</td>
+                            <td>ẢNH</td>
+                            <td>TÊN</td>
+                            <td>GIÁ</td>
+                            <td>SỐ LƯỢNG</td>
+                            <td>TỔNG CỘNG($)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr>
+                            <td><a href="#"><i class="far fa-times-circle"></i></a></td>
+                            <td><img src="./images/products/f1.jpg" alt=""></td>
+                            <td>Cartoon Astronaut T-Shirts</td>
+                            <td>$118.19</td>
+                            <td><input type="number" value="1"></td>
+                            <td>$118.19</td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="cart-add" class="section-p1">
+                <div id="coupon">
+                    <h3>Sử dụng Coupon</h3>
+                    <div>
+                        <input type="text" placeholder="Nhập mã Coupon">
+                        <button class="normal">Sử dụng</button>
+                    </div>
+                </div>
+                <div id="subtotal">
+                    <h3>Tổng đơn hàng</h3>
+                    <table>
+                        <!-- <tr>
+                            <td>Cart Subtotal($)</td>
+                            <td id="tongtien"></td>
+                        </tr> -->
+                        <tr>
+                            <td>Phí vận chuyển</td>
+                            <td>Miễn phí</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tổng cộng($)</strong></td>
+                            <td><strong id="tongtien"></strong></td>
+                        </tr>
+                    </table>
+                    <button class="normal" id="btnCheckOut">Tiến hành đặt hàng</button>
+                </div>
+            </section>
+
+            <%- include('footer.ejs') %>
+
+    </body>
+
+    <script src="./javascripts/script.js"></script>
+    <!-- Sho giỏ hàng -->
+    <script>
+        var cart = JSON.parse(localStorage.getItem("cart"));
+        if (cart) cart.forEach((sp, index) => {
+            document.querySelector("#cart tbody").innerHTML += `
+            <tr>
+                <td><a href="#"><i class="far fa-times-circle"></i></a></td>
+                <td><img src="./images/products/${sp.image}" alt="${sp.name}"></td>
+                <td>${sp.name}</td>
+                <td class="gia">$${sp.price}</td>
+                <td><input type="number" min="0" max="100" value="${sp.quantity}" onmouseout="tinhtien(${sp.price}, this.value, ${index})"></td>
+                <td class="tien">${sp.quantity * sp.price}</td>
+            </tr>
+            `
+        })
+    </script>
+    <script>
+        // tinh tien khi doi so luong
+        function tinhtien(gia, soluong, i) {
+            tien = gia * soluong;
+            console.log(tien);
+            document.getElementsByClassName("tien")[i].innerText = tien;
+            tinhtongtien()
+        }
+        function tinhtongtien() {
+            arrTien = document.getElementsByClassName("tien");
+            tongtien = 0;
+            for (let t of arrTien) {
+                tongtien += parseInt(t.innerText);
+                console.log(tongtien);
+            }
+            document.querySelector("#tongtien").innerText = tongtien;
+        }
+    </script>
+    <script>
+        // Nut chuyen toi trang thanh toan
+        document.querySelector('#btnCheckOut').onclick = function () {
+            document.location = "/checkout";
+        }
+    </script>
+
+</html>

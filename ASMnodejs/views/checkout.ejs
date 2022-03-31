@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('head.ejs') %>
+
+    <body>
+        <%- include('navbar-header.ejs') %>
+
+
+            <section id="page-header" class="about-header">
+                <h2>#cart</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </section>
+
+            <section class="check-out">
+                <div class="info">
+                    <div class="logo">
+                        <img src="/images/logo.png" alt="">
+                    </div>
+                    <p>Thông tin giao hàng</p>
+                    <form action="" method="post">
+                        <input type="text" name="name" id="nameco" placeholder="Họ và tên">
+                        <input type="email" name="email" id="emailco" placeholder="Email">
+                        <input type="text" name="phone" id="phoneco" placeholder="Số điện thoại">
+                        <input type="text" name="address" id="addressco" placeholder="Địa chỉ">
+                        <button id="btnOrder" class="normal btn">Đặt Hàng</button>
+                        <a href="index.html"><i class="fas fa-chevron-left"></i>Quay Lại</a>
+                    </form>
+                </div>
+                <div class="total">
+                    <section id="cart-checkout" class="section-p1">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <td>ẢNH</td>
+                                    <td>TÊN</td>
+                                    <td>GIÁ</td>
+                                    <td>SỐ LƯỢNG</td>
+                                    <td>TỔNG($)</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <h3 id="tongtien"></h3>
+                    </section>
+                </div>
+            </section>
+
+            <%- include('footer.ejs') %>
+
+
+    </body>
+
+    <script src="./assets/js/script.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        // Show giỏ hàng trang thanh toán
+        var listCartCheckOut = document.querySelector("#cart-checkout tbody");
+        if (listCartCheckOut) {
+            var cart = JSON.parse(localStorage.getItem("cart"));
+            console.log(cart);
+            if (cart)
+                cart.forEach((sp, index) => {
+                    listCartCheckOut.innerHTML += `
+                <tr>
+                    <td><img src="/images/products/${sp.image}" alt="${sp.name}"></td>
+                    <td>${sp.name}</td>
+                    <td class="gia">$${sp.price}</td>
+                    <td>${sp.quantity}</td>
+                    <td class="tien">${sp.quantity * sp.price}</td>
+                </tr>`;
+                });
+        }
+    </script>
+    <script>
+        // Nút đặt hàng trang check-out
+        document.querySelector("#btnOrder").onclick = function () {
+            // e.preventDefault();
+            nameInput = document.querySelector("#nameco").value.trim();
+            emailInput = document.querySelector("#emailco").value.trim();
+            phoneInput = document.querySelector("#phoneco").value.trim();
+            addressInput = document.querySelector("#addressco").value.trim();
+
+            if (nameInput == "") {
+                alert("Chưa nhập tên");
+                return;
+            }
+            if (emailInput == "") {
+                alert("Chưa nhập email");
+                return;
+            }
+            if (phoneInput == "") {
+                alert("Chưa nhập số điện thoại");
+                return;
+            }
+            if (addressInput == "") {
+                alert("Chưa nhập địa chỉ");
+                return;
+            }
+
+            var donhang = {
+                cus_name: nameInput,
+                cus_add: addressInput,
+                cus_email: emailInput,
+                cus_phone: phoneInput,
+                create_day: new Date().toISOString().slice(0, 10),
+                status: "Đơn Hàng Mới",
+            };
+
+            url = "http://localhost:3000/orders";
+            options = {
+                method: "post",
+                body: JSON.stringify(donhang),
+                headers: { "Content-Type": "application/json" },
+            };
+            fetch(url, options)
+                .then(res => res.json())
+                .then(data => {
+                    order_id = data.id;
+                    // Lưu chi tiết đơn hàng
+                    saveProductOrder(order_id);
+                    console.log(data);
+                });
+            alert("Cám ơn bạn đã ủng hộ chúng tôi!");
+            document.location = "/";
+        };
+        // Lưu chi tiết đơn hàng
+        function saveProductOrder(order_id) {
+            let cart = JSON.parse(localStorage.getItem("cart"));
+            cart.forEach((sp) => {
+                let objSP = {
+                    order_id: order_id,
+                    product_id: sp.id,
+                    quantiny: sp.quantiny,
+                    unti_price: sp.price,
+                };
+                url = "http://localhost:3000/orders_details";
+                options = {
+                    method: "post",
+                    body: JSON.stringify(objSP),
+                    headers: { "Content-Type": "application/json" },
+                };
+                fetch(url, options)
+                    .then((res) => res.json())
+                    .then((d) => { });
+            });
+        }
+    </script>
+
+</html>
